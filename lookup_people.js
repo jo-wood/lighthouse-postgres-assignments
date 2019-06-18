@@ -14,11 +14,25 @@ client.connect((err) => {
   if (err) {
     return console.error("Connection Error", err);
   }
-  client.query("SELECT $1::int AS number", ["1"], (err, result) => {
+
+  const person = process.argv[2];
+
+  client.query("SELECT * FROM famous_people WHERE first_name = $1", [person], (err, result) => {
     if (err) {
       return console.error("error running query", err);
     }
-    console.log(result.rows); //output: 1
+
+    for (let celeb of (result.rows)){
+
+      let firstName = celeb.first_name;
+      let lastName = celeb.last_name;
+      let bDate = new Date(celeb.birthdate).toISOString().split('T')[0];
+      let result = `- Celeb: ${firstName} ${lastName}, born '${bDate}'`;
+
+      console.log(result);
+    }
+    
+
     client.end();
   });
 });
