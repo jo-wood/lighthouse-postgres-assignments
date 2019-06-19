@@ -11,61 +11,9 @@ const knex = require("knex")({
 });
 
 
- //** check if lastName exists
-
-
-// // const subquery = knex('famous_people').where({ first_name: firstName, last_name: lastName })
-
-// knex('famous_people')
-//     .whereIn('last_name', [lastName])
-//     .then(result => {
-//       console.log(result[0])
-//       return result;      
-//     })
-//     .catch(() => {
-//       console.log(`No records of: ${lastName}`)
-//     })
-//     .then(() => knex.destroy());
-
-
- //** print each row of table:
-
-// knex('famous_people')
-//   .then(result => {
-//     result.forEach(celeb => console.log(celeb))
-//     return result;
-//   })
-//   .catch((e) => {
-//     console.error(e)
-//   })
-//   .then(() => knex.destroy());
-
-
-//** print each row of table:
-
-// knex('famous_people')
-//     .whereIn('last_name', ['Hanks']).del()
-//     .then(
-//       knex('famous_people')
-//         .insert({first_name: 'Tom', last_name: 'Hanks', birthdate: '1956-08-09' })
-//             .then(
-//               knex('famous_people')
-//               .then(result => {
-//                 result.forEach(celeb => console.log(celeb))
-//                 return result;
-//               }))
-//     )
-
-//     .catch(() => console.log('Nope'))
-//     .finally(() => knex.destroy());
-
-
-
 const firstName = process.argv[2];
 const lastName = process.argv[3];
 const bDate = new Date(process.argv[4]); // need in YYYY-MM-DD form
-
-
 
 knex('famous_people')
 .insert({
@@ -78,9 +26,12 @@ knex('famous_people')
 })
 .then(res => {console.log(res)})
 .then(() => {
-  console.log("hello")
+  console.log("Close Connection")
   knex.destroy()
 })
+
+
+//** KEEP PROMISE NOTES FROM HESHAM BELOW */
 
 // function insert() {
 //   return new Promise((resolve, reject) => {
@@ -113,3 +64,27 @@ knex('famous_people')
 //     }
 //   }
 // }
+
+//** DELETE from table */
+
+// const firstName = process.argv[2];
+// const lastName = process.argv[3];
+// const bDate = new Date(process.argv[4]); // need in YYYY-MM-DD form
+
+// knex('famous_people')
+//   .whereIn('last_name', ['Roberts']).del()
+//   .insert({
+//     first_name: firstName,
+//     last_name: lastName,
+//     birthdate: bDate
+//   })
+//   .then(() => {
+//     return knex('famous_people')
+//   })
+//   .then(res => {
+//     console.log(res)
+//   })
+//   .then(() => {
+//     console.log("Close Connection")
+//     knex.destroy()
+//   })
